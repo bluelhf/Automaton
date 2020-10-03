@@ -1,11 +1,12 @@
 package io.github.bluelhf.example;
 
 import io.github.bluelhf.automaton.Automaton;
-import io.github.bluelhf.automaton.modifiers.ClickType;
 import io.github.bluelhf.automaton.modifiers.Modifier;
 import io.github.bluelhf.automaton.modifiers.Modifiers;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.locks.LockSupport;
@@ -13,23 +14,20 @@ import java.util.concurrent.locks.LockSupport;
 public class HeartDemo {
     public static void main(String[] args) {
         Automaton automaton;
-        try {
-            automaton = new Automaton();
-        } catch (AWTException e) {
-            e.printStackTrace();
-            return;
-        }
+        automaton = new Automaton();
 
-        LockSupport.parkNanos(5000000000L);
+        automaton.registerHotkey(KeyEvent.VK_K, new Modifiers(Modifier.SHIFT, Modifier.CTRL), () -> JOptionPane.showMessageDialog(null, "You pressed K!", "Heads up!", JOptionPane.INFORMATION_MESSAGE));
+
+        LockSupport.parkNanos(1000000000L);
 
 
-        double centreX = automaton.getScreenWidth()/2;
-        double centreY = automaton.getScreenHeight()/2;
+        double centreX = automaton.getScreenWidth() / 2;
+        double centreY = automaton.getScreenHeight() / 2;
         double t = Math.min(automaton.getScreenWidth(), automaton.getScreenHeight()) / 6;
 
         ArrayList<Point> points = new ArrayList<>();
         ArrayList<Point> temp = new ArrayList<>();
-        for(double x = -2; x < 2; x += 0.01) {
+        for (double x = -2; x < 2; x += 0.01) {
             // Upper half of the heart
             double y1 = Math.sqrt(1 - Math.pow((Math.abs(x) - 1), 2)) + 1;
 
@@ -38,9 +36,9 @@ public class HeartDemo {
 
 
             // Convert to screen coordinates
-            int screenX = (int) (centreX + x*t);
-            int screenY1 = (int) (centreY - y1*t);
-            int screenY2 = (int) (centreY - y2*t);
+            int screenX = (int) (centreX + x * t);
+            int screenY1 = (int) (centreY - y1 * t);
+            int screenY2 = (int) (centreY - y2 * t);
 
             points.add(new Point(screenX, screenY1));
 
@@ -59,5 +57,6 @@ public class HeartDemo {
             }
         }
 
+        automaton.close();
     }
 }

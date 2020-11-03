@@ -63,6 +63,16 @@ public class Automaton implements AutoCloseable {
     }
 
     /**
+     * @return The colour of the pixel at (x, y) on the screen, or null if the {@link Robot} cannot be accessed.
+     * @param x The x-coordinate of the pixel
+     * @param y The y-coordinate of the pixel
+     * */
+    public Color getRGB(int x, int y) {
+        if (robot == null) return null;
+        return robot.getPixelColor(x, y);
+    }
+
+    /**
      * Unregisters a given keycode and {@link Modifiers} from the global hotkeys.
      *
      * @param keyCode   The {@link KeyEvent} VK_ constant of the hotkey
@@ -175,6 +185,32 @@ public class Automaton implements AutoCloseable {
     public boolean click(ClickType type) {
         if (robot == null) return false;
         robot.mousePress(type.getButtonMask());
+        robot.mouseRelease(type.getButtonMask());
+        return true;
+    }
+
+    /**
+     * Holds the specified {@link ClickType} down.
+     *
+     * @param type The type of click.
+     *
+     * @return Whether the click succeeded or not (it will fail if, for example, the robot is null)
+     */
+    public boolean hold(ClickType type) {
+        if (robot == null) return false;
+        robot.mousePress(type.getButtonMask());
+        return true;
+    }
+
+    /**
+     * Releases the specified {@link ClickType}.
+     *
+     * @param type The type of click.
+     *
+     * @return Whether the click succeeded or not (it will fail if, for example, the robot is null)
+     */
+    public boolean release(ClickType type) {
+        if (robot == null) return false;
         robot.mouseRelease(type.getButtonMask());
         return true;
     }

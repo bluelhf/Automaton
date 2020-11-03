@@ -7,7 +7,7 @@ public enum ClickType {
     RIGHT(InputEvent.BUTTON2_DOWN_MASK),
     MIDDLE(InputEvent.BUTTON3_DOWN_MASK);
 
-    private int buttonMask;
+    private final int buttonMask;
 
     ClickType(int buttonMask) {
         this.buttonMask = buttonMask;
